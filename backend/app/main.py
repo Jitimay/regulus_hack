@@ -17,7 +17,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.dependencies import setup_dependencies, teardown_dependencies
-from app.api.routes import health, runs
+from app.api.routes import health, runs, pubsub
 from app.config import get_settings
 from app.infrastructure.logging import configure_logging
 
@@ -55,6 +55,7 @@ def create_app() -> FastAPI:
     # Routes
     app.include_router(health.router, prefix="/api/v1")
     app.include_router(runs.router, prefix="/api/v1")
+    app.include_router(pubsub.router)
 
     return app
 

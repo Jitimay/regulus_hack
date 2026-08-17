@@ -50,6 +50,10 @@ def get_gemini_client() -> GeminiClient:
     return _gemini_client
 
 
+def get_run_worker() -> RunWorker | None:
+    return _run_worker
+
+
 async def setup_dependencies(settings: Settings) -> None:
     """Initialize all singletons based on settings. Called at app startup."""
     global _repositories, _job_publisher, _job_queue, _run_worker, _gemini_client
