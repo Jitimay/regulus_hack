@@ -1,0 +1,63 @@
+{
+  "_notice": "DEMONSTRATION SCENARIO — Synthetic/illustrative data only. Does not represent any real location or organization.",
+  "scenario_name": "Maji Valley Water Infrastructure Allocation",
+  "region": "Maji Valley (fictional demonstration region)",
+  "communities": [
+    {
+      "name": "Kijani",
+      "population": 6000,
+      "current_access_pct": 0.42,
+      "notes": "Largest community; most affected by grid outages"
+    },
+    {
+      "name": "Mtoni",
+      "population": 4000,
+      "current_access_pct": 0.55,
+      "notes": "River proximity provides partial water availability"
+    },
+    {
+      "name": "Amani",
+      "population": 3000,
+      "current_access_pct": 0.48,
+      "notes": "Highest elevation; storage shortfalls common"
+    }
+  ],
+  "budget_usd": 50000,
+  "objective": "Maximize reliable household water access while controlling downside risk",
+  "candidate_interventions": [
+    "pump_expansion",
+    "storage_expansion",
+    "solar_pumping",
+    "combined_strategy"
+  ],
+  "infrastructure_parameters": {
+    "electricity_reliability": {
+      "mean_fraction": 0.58,
+      "description": "14 hours/day average grid uptime (synthetic estimate)"
+    },
+    "rainfall_mm_year": {
+      "mean": 650,
+      "std": 120,
+      "description": "Annual rainfall with moderate inter-annual variability (synthetic)"
+    },
+    "storage_days": {
+      "mean": 1.2,
+      "description": "Current community storage capacity in days of demand (synthetic)"
+    },
+    "pump_availability": {
+      "mean_fraction": 0.60,
+      "description": "Current pump uptime limited by electricity reliability (synthetic)"
+    }
+  },
+  "probability_assumptions": {
+    "note": "All values are illustrative assumptions for demonstration purposes",
+    "electricity_reliability_beta": {"alpha": 3.0, "beta": 2.0},
+    "water_availability_normal": {"mean": 0.75, "std": 0.18},
+    "household_demand_normal": {"mean": 150, "std": 30, "unit": "liters/day"}
+  },
+  "expected_outcomes": {
+    "_note": "These are demo scenario priors — actual simulation results will differ based on Monte Carlo sampling",
+    "baseline_access_pct": 0.46,
+    "target_access_pct": 0.60
+  }
+}
