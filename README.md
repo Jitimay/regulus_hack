@@ -93,3 +93,4 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full diagram.
 ## Disclaimer
 
 All demonstration data uses a synthetic, fictional scenario (Maji Valley). Results are probabilistic scenario estimates — not predictions, guarantees, or policy recommendations. Consult domain experts before acting on any analysis.
+# regulus_hack
