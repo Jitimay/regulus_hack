@@ -51,6 +51,8 @@ Open [http://localhost:3000](http://localhost:3000) and click **Run demo scenari
 
 ## Architecture at a glance
 
+![Architecture diagram](docs/architecture.svg)
+
 ```
 Vercel (Next.js)  →  Cloud Run (FastAPI)  →  Pub/Sub  →  Worker
                                 ↓                              ↓

@@ -167,11 +167,17 @@ class ResearchAgent:
                 "Solar irradiance levels for Maji Valley",
             ]
         else:
-            raw_items = MAJI_VALLEY_FOLLOWUP_EVIDENCE
-            query = f"Follow-up research targeting: {target_variable or 'electricity_reliability'}"
+            # Filter follow-up evidence to items relevant to the target variable when possible
+            target = target_variable or "electricity_reliability"
+            targeted = [
+                item for item in MAJI_VALLEY_FOLLOWUP_EVIDENCE
+                if item.get("variable_name") == target
+            ]
+            raw_items = targeted if targeted else MAJI_VALLEY_FOLLOWUP_EVIDENCE
+            query = f"Follow-up research targeting: {target} (loop {research_loop})"
             summary = (
-                "Follow-up evidence collected. Grid reliability updated with higher confidence. "
-                "Solar pump performance data from comparable regions obtained. "
+                f"Follow-up evidence collected for '{target}'. "
+                "Confidence updated with additional corroborating data. "
                 "All data is illustrative — not real-world statistics."
             )
             missing = [

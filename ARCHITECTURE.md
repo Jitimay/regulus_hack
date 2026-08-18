@@ -12,6 +12,8 @@ Regulus is a full-stack agentic system with three tiers:
 
 ## System diagram
 
+![Regulus Architecture](docs/architecture.svg)
+
 ```mermaid
 flowchart TD
     User["User (Browser)"]
@@ -97,10 +99,9 @@ Worker receives Pub/Sub message
     → Transition: COMPLETED
 ```
 
-### Frontend polling
+### Cloud Run Pub/Sub push delivery
 
-```
-Run page mounts
+When deployed to Cloud Run, GCP pushes Pub/Sub messages via HTTP POST to `/internal/pubsub/push`. The endpoint decodes the base64 message, extracts `run_id`, and dispatches to the `RunWorker` as an async task. In local development, the in-memory queue bypasses this endpoint entirely.
   → GET /api/v1/runs/:id  (every 2s while not terminal)
   → GET /api/v1/runs/:id/events  (every 2s while not terminal)
   → When completed: GET /api/v1/runs/:id/results
@@ -129,7 +130,9 @@ Run page mounts
 | `app/app/new/` | Scenario submission form |
 | `app/app/runs/[runId]/` | Run dashboard with live event timeline |
 | `app/app/model/[runId]/` | PGM graph visualization (React Flow) |
+| `app/app/scenarios/[runId]/` | Scenario comparison with charts |
 | `app/app/results/[runId]/` | Final results report with charts |
+| `app/docs/` | Documentation page |
 | `components/run/` | EventTimeline, RunStatusBar |
 | `components/model/` | PGMGraph (React Flow wrapper) |
 | `lib/` | API client, types, validation, utilities |

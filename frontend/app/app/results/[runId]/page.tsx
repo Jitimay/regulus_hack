@@ -68,6 +68,9 @@ export default function ResultsPage({ params }: Params) {
             <span className="text-sm text-zinc-400">Results</span>
           </div>
           <div className="flex items-center gap-2">
+            <Link href={`/app/scenarios/${runId}`}>
+              <Button variant="secondary" size="sm">Scenarios</Button>
+            </Link>
             <Link href={`/app/model/${runId}`}>
               <Button variant="secondary" size="sm">View Model</Button>
             </Link>

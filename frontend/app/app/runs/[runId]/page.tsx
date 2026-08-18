@@ -57,6 +57,9 @@ export default function RunPage({ params }: Params) {
           <div className="flex items-center gap-2">
             {completed && (
               <>
+                <Link href={`/app/scenarios/${runId}`}>
+                  <Button variant="secondary" size="sm">Scenarios</Button>
+                </Link>
                 <Link href={`/app/model/${runId}`}>
                   <Button variant="secondary" size="sm">View Model</Button>
                 </Link>
@@ -142,6 +145,11 @@ export default function RunPage({ params }: Params) {
               <div className="rounded-lg border border-emerald-800 bg-emerald-950/30 p-4">
                 <p className="text-sm font-medium text-emerald-400 mb-3">Analysis complete</p>
                 <div className="space-y-2">
+                  <Link href={`/app/scenarios/${runId}`} className="block">
+                    <Button variant="secondary" size="sm" className="w-full justify-start">
+                      Compare scenarios →
+                    </Button>
+                  </Link>
                   <Link href={`/app/model/${runId}`} className="block">
                     <Button variant="secondary" size="sm" className="w-full justify-start">
                       View probabilistic model →

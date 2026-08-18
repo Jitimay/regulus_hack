@@ -175,12 +175,12 @@ class FirestoreRunRepository(RunRepository):
         self._db = db
 
     async def save(self, run: Run) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("runs").document(run.id)
         await loop.run_in_executor(None, ref.set, run.to_dict())
 
     async def get(self, run_id: str) -> Run | None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("runs").document(run_id)
         doc = await loop.run_in_executor(None, ref.get)
         if not doc.exists:
@@ -188,7 +188,7 @@ class FirestoreRunRepository(RunRepository):
         return Run.from_dict(doc.to_dict())
 
     async def update_status(self, run_id: str, **fields: Any) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("runs").document(run_id)
         await loop.run_in_executor(None, ref.update, fields)
 
@@ -198,12 +198,12 @@ class FirestoreEventRepository(EventRepository):
         self._db = db
 
     async def save(self, event: AgentEvent) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("events").document(event.id)
         await loop.run_in_executor(None, ref.set, event.to_dict())
 
     async def list_for_run(self, run_id: str) -> list[AgentEvent]:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         query = self._db.collection("events").where("run_id", "==", run_id).order_by("timestamp")
 
         def _fetch():
@@ -218,12 +218,12 @@ class FirestoreModelRepository(ModelRepository):
         self._db = db
 
     async def save(self, run_id: str, model_data: dict[str, Any]) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("models").document(run_id)
         await loop.run_in_executor(None, ref.set, {"run_id": run_id, **model_data})
 
     async def get(self, run_id: str) -> dict[str, Any] | None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("models").document(run_id)
         doc = await loop.run_in_executor(None, ref.get)
         return doc.to_dict() if doc.exists else None
@@ -234,12 +234,12 @@ class FirestoreScenarioRepository(ScenarioRepository):
         self._db = db
 
     async def save(self, scenario_set: ScenarioSet) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("scenarios").document(scenario_set.run_id)
         await loop.run_in_executor(None, ref.set, scenario_set.to_dict())
 
     async def get(self, run_id: str) -> ScenarioSet | None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("scenarios").document(run_id)
         doc = await loop.run_in_executor(None, ref.get)
         if not doc.exists:
@@ -252,12 +252,12 @@ class FirestoreResultRepository(ResultRepository):
         self._db = db
 
     async def save(self, result: RunResult) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("results").document(result.run_id)
         await loop.run_in_executor(None, ref.set, result.to_dict())
 
     async def get(self, run_id: str) -> RunResult | None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         ref = self._db.collection("results").document(run_id)
         doc = await loop.run_in_executor(None, ref.get)
         if not doc.exists:
@@ -270,7 +270,7 @@ class FirestoreEvidenceRepository(EvidenceRepository):
         self._db = db
 
     async def save_many(self, items: list[EvidenceItem]) -> None:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         batch = self._db.batch()
         for item in items:
             ref = self._db.collection("evidence").document(item.id)
@@ -278,7 +278,7 @@ class FirestoreEvidenceRepository(EvidenceRepository):
         await loop.run_in_executor(None, batch.commit)
 
     async def list_for_run(self, run_id: str) -> list[EvidenceItem]:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         query = self._db.collection("evidence").where("run_id", "==", run_id)
 
         def _fetch():

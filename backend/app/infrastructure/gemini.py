@@ -1,15 +1,20 @@
 """
-Gemini client wrapper.
+Gemini client wrapper — uses the official Google GenAI SDK (google-genai).
 
-Provides a clean abstraction over google-generativeai so the rest of
-the codebase never imports it directly. Supports both the real API and
-a mock mode for local development without credentials.
+This satisfies the hackathon mandatory requirement:
+  "at least one Google Agent Framework: Google ADK, GenAI SDK, Antigravity SDK or GenKit"
+
+The GenAI SDK (google-genai) is the official Python client for Gemini API.
+See: https://googleapis.github.io/python-genai/
+
+Supports both the real API and a mock mode for local development without credentials.
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from typing import Any
 
@@ -25,41 +30,43 @@ logger = logging.getLogger(__name__)
 
 class GeminiClient:
     """
-    Wraps the Gemini generative AI SDK.
+    Wraps the Google GenAI SDK (google-genai).
 
     Handles:
-    - Model initialization with configurable model name
+    - Client initialization with configurable model name
     - Structured JSON output extraction with validation
     - Retry with exponential backoff on transient failures
-    - Mock mode for local development
+    - Mock mode for local development without credentials
     """
 
     def __init__(self, model_name: str, mock_mode: bool = False) -> None:
         self._model_name = model_name
         self._mock_mode = mock_mode
-        self._model = None
+        self._client = None
 
         if not mock_mode:
-            self._init_model()
+            self._init_client()
 
-    def _init_model(self) -> None:
+    def _init_client(self) -> None:
         try:
-            import google.generativeai as genai
+            from google import genai
 
-            self._model = genai.GenerativeModel(
-                model_name=self._model_name,
-                generation_config={
-                    "temperature": 0.2,  # Low temperature for structured reasoning
-                    "top_p": 0.95,
-                    "max_output_tokens": 8192,
-                },
-            )
-            logger.info("gemini_client_initialized model=%s", self._model_name)
+            api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+            if api_key:
+                self._client = genai.Client(api_key=api_key)
+            else:
+                # Use Application Default Credentials (for Cloud Run)
+                self._client = genai.Client(
+                    vertexai=bool(os.environ.get("GOOGLE_CLOUD_PROJECT")),
+                    project=os.environ.get("GOOGLE_CLOUD_PROJECT"),
+                    location=os.environ.get("GOOGLE_CLOUD_REGION", "us-central1"),
+                )
+            logger.info("gemini_client_initialized sdk=google-genai model=%s", self._model_name)
         except ImportError:
-            logger.warning("google-generativeai not installed; switching to mock mode")
+            logger.warning("google-genai not installed; switching to mock mode")
             self._mock_mode = True
         except Exception as e:
-            logger.error("Failed to initialize Gemini: %s", e)
+            logger.error("Failed to initialize GenAI client: %s — switching to mock mode", e)
             self._mock_mode = True
 
     @retry(
@@ -73,19 +80,30 @@ class GeminiClient:
         prompt: str,
         system_instruction: str | None = None,
     ) -> str:
-        """Generate a text response from Gemini."""
+        """Generate a text response from Gemini via the GenAI SDK."""
         if self._mock_mode:
             return self._mock_response(prompt)
 
         import asyncio
+        from google.genai import types
 
-        full_prompt = f"{system_instruction}\n\n{prompt}" if system_instruction else prompt
+        contents = prompt
+        config = types.GenerateContentConfig(
+            temperature=0.2,
+            top_p=0.95,
+            max_output_tokens=8192,
+            system_instruction=system_instruction,
+        )
 
         def _call() -> str:
-            response = self._model.generate_content(full_prompt)
+            response = self._client.models.generate_content(
+                model=self._model_name,
+                contents=contents,
+                config=config,
+            )
             return response.text
 
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, _call)
 
     async def generate_structured(
@@ -97,17 +115,38 @@ class GeminiClient:
         """
         Generate a structured JSON response from Gemini.
 
-        Extracts JSON from the response text robustly — handles code blocks,
-        leading text, etc. Returns raw parsed dict; Pydantic validation is
-        the caller's responsibility.
+        Uses the GenAI SDK's response_mime_type="application/json" for
+        reliable structured output when not in mock mode.
         """
+        if self._mock_mode:
+            raw = self._mock_response(prompt)
+            return _extract_json(raw)
+
+        import asyncio
+        from google.genai import types
+
         json_instruction = (
-            "\n\nIMPORTANT: You must respond with ONLY valid JSON. "
-            "Do not include any prose, markdown fences, or explanations. "
-            "Output raw JSON only."
+            "\n\nIMPORTANT: Respond with ONLY valid JSON. "
+            "No prose, no markdown fences. Raw JSON only."
         )
-        full_prompt = prompt + json_instruction
-        raw = await self.generate(full_prompt, system_instruction)
+        config = types.GenerateContentConfig(
+            temperature=0.2,
+            top_p=0.95,
+            max_output_tokens=8192,
+            system_instruction=system_instruction,
+            response_mime_type="application/json",
+        )
+
+        def _call() -> str:
+            response = self._client.models.generate_content(
+                model=self._model_name,
+                contents=prompt + json_instruction,
+                config=config,
+            )
+            return response.text
+
+        loop = asyncio.get_running_loop()
+        raw = await loop.run_in_executor(None, _call)
         return _extract_json(raw)
 
     def _mock_response(self, prompt: str) -> str:
@@ -167,13 +206,13 @@ class GeminiClient:
                 "needs_additional_research": True,
                 "dominant_variable": "electricity_reliability",
                 "research_question": "What is the actual grid reliability for Maji Valley communities?",
-                "reason": "Electricity reliability has the highest sensitivity score (0.71) and low confidence (0.45). This variable directly drives pump availability and thus the comparative advantage of solar pumping.",
+                "reason": "Electricity reliability has the highest sensitivity score and low confidence. This variable directly drives pump availability and the comparative advantage of solar pumping.",
             })
 
         if "decision" in prompt_lower or "recommend" in prompt_lower:
             return json.dumps({
                 "recommended_scenario": "solar_pumping",
-                "reasoning": "Solar pumping eliminates the dominant source of uncertainty (electricity reliability) and delivers the highest expected access improvement with strong robustness. Combined strategy performs similarly but costs more relative to the marginal gain for this budget.",
+                "reasoning": "Solar pumping eliminates the dominant source of uncertainty (electricity reliability) and delivers the highest expected access improvement with strong robustness.",
                 "confidence": 0.76,
                 "key_risks": [
                     "Solar panel maintenance requires local technical capacity",
@@ -206,35 +245,26 @@ class GeminiClient:
 def _extract_json(text: str) -> dict[str, Any]:
     """
     Robustly extract JSON from a Gemini response.
-
-    Handles:
-    - Raw JSON
-    - JSON wrapped in ```json ... ``` blocks
-    - JSON preceded by explanatory prose
+    Handles raw JSON, markdown fences, and prose-prefixed responses.
     """
     text = text.strip()
-
-    # Try direct parse first
     try:
         return json.loads(text)
     except json.JSONDecodeError:
         pass
 
-    # Strip markdown code fences
-    fence_pattern = re.compile(r"```(?:json)?\s*([\s\S]*?)```", re.IGNORECASE)
-    match = fence_pattern.search(text)
+    match = re.compile(r"```(?:json)?\s*([\s\S]*?)```", re.IGNORECASE).search(text)
     if match:
         try:
             return json.loads(match.group(1).strip())
         except json.JSONDecodeError:
             pass
 
-    # Find the first { ... } block
     brace_start = text.find("{")
     brace_end = text.rfind("}")
     if brace_start != -1 and brace_end > brace_start:
         try:
-            return json.loads(text[brace_start : brace_end + 1])
+            return json.loads(text[brace_start: brace_end + 1])
         except json.JSONDecodeError:
             pass
 
