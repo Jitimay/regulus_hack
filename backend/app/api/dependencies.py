@@ -7,6 +7,7 @@ and worker — assembled once at startup and reused across requests.
 
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from typing import Annotated
 
@@ -59,7 +60,12 @@ async def setup_dependencies(settings: Settings) -> None:
     global _repositories, _job_publisher, _job_queue, _run_worker, _gemini_client
 
     # Gemini client
-    mock_gemini = settings.is_development and not settings.google_application_credentials
+    mock_gemini = (
+        settings.is_development
+        and not settings.google_application_credentials
+        and not os.environ.get("GEMINI_API_KEY")
+        and not os.environ.get("GOOGLE_API_KEY")
+    )
     _gemini_client = GeminiClient(
         model_name=settings.gemini_model,
         mock_mode=mock_gemini,

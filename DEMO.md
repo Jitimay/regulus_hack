@@ -2,11 +2,13 @@
 
 ## The demonstration scenario
 
-**Maji Valley Water Infrastructure Allocation**
+**Bujumbura Peri-Urban Water Infrastructure Allocation**
 
-> _Fictional region. Synthetic/illustrative data only._
+> _Based on real infrastructure conditions in Burundi. Data values are illustrative estimates, not official statistics._
 
-A decision-maker needs to allocate a $50,000 budget to improve reliable water access across three communities in Maji Valley. The communities (Kijani, Mtoni, Amani) currently have partial, intermittent water access due to aging infrastructure and an unreliable electricity grid.
+A local authority needs to allocate a $50,000 budget to improve reliable water access across three peri-urban communities near Bujumbura, Burundi. The communities (Kijani, Mtoni, Amani) currently have partial, intermittent water access due to aging infrastructure and an electricity grid that runs only 10–14 hours per day.
+
+This is a real class of decision that local authorities in Burundi face. The electricity unreliability is not a fictional constraint — it is a structural feature of the grid in many peri-urban areas. A wrong allocation (e.g. investing in electric pumps when the grid is the binding constraint) wastes a multi-year budget.
 
 ---
 

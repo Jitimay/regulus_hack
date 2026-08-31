@@ -4,7 +4,24 @@
 
 Regulus helps decision-makers explore difficult infrastructure problems under uncertainty. It uses autonomous Gemini agents and probabilistic simulation to research, model, simulate, and recommend — without a human manually orchestrating every step.
 
-> **Demo scenario:** _How should we allocate $50,000 to improve water access across three communities in Maji Valley?_
+> **Built by a Burundian developer who has lived these infrastructure problems firsthand.**
+>
+> _Demo scenario: How should a local authority allocate $50,000 to improve reliable water access across three communities in Bujumbura's peri-urban zone — where the grid runs 10–14 hours a day and pump failures are routine?_
+
+---
+
+## The problem this solves
+
+In Burundi — and across much of sub-Saharan Africa — infrastructure allocation decisions are made under deep uncertainty:
+
+- The electricity grid is unreliable (10–16 hours/day in many areas)
+- Rainfall is variable and seasonal
+- Pump infrastructure is aging and maintenance is inconsistent
+- Budget is scarce and mistakes are expensive
+
+A local authority with $50,000 to spend on water infrastructure has to choose between pump expansion, solar pumping, storage tanks, or a combined approach — without knowing which variable will dominate outcomes.
+
+Regulus was built to make that investigation rigorous and transparent.
 
 ---
 
@@ -71,10 +88,10 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full diagram.
 |---|---|
 | Frontend | Next.js 15, TypeScript, Tailwind CSS, Recharts, React Flow, TanStack Query |
 | Backend | Python 3.12+, FastAPI, Pydantic, structlog |
-| AI | Google Gemini (via google-generativeai), 4 autonomous agents |
+| AI | Google Gemini 2.5 Flash (via google-genai SDK), 4 autonomous agents |
 | Math | NumPy, SciPy, NetworkX, Monte Carlo simulation |
 | Cloud | Google Cloud Run, Firestore, Pub/Sub |
-| Tests | pytest, 33 tests, full integration test |
+| Tests | pytest, 52 tests, full integration test |
 
 ---
 
@@ -94,5 +111,4 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full diagram.
 
 ## Disclaimer
 
-All demonstration data uses a synthetic, fictional scenario (Maji Valley). Results are probabilistic scenario estimates — not predictions, guarantees, or policy recommendations. Consult domain experts before acting on any analysis.
-# regulus_hack
+The demonstration scenario uses illustrative data based on general infrastructure patterns in peri-urban East Africa. Values are not sourced from official government statistics. Results are probabilistic scenario estimates — not predictions, guarantees, or policy recommendations. Consult domain experts and local authorities before acting on any analysis.

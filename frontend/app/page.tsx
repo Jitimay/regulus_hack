@@ -46,14 +46,16 @@ export default function LandingPage() {
         </h1>
 
         <p className="mb-4 max-w-2xl text-lg text-zinc-400 leading-relaxed">
-          Regulus uses autonomous Gemini agents and probabilistic simulation to explore
-          infrastructure decisions under uncertainty — and tells you <em>why</em>, not just <em>what</em>.
+          Built by a Burundian developer who has lived these infrastructure problems firsthand.
+          In Burundi — and across much of sub-Saharan Africa — a local authority with $50,000
+          to spend on water infrastructure has to choose between solar pumping, pump expansion,
+          or storage tanks, without knowing which variable will dominate outcomes.
         </p>
 
         <p className="mb-10 max-w-2xl text-base text-zinc-500">
-          Give Regulus a hard allocation problem. It researches evidence, builds a probabilistic model,
-          runs Monte Carlo simulation, detects dominant uncertainties, and autonomously loops back
-          for more research before finalizing a recommendation you can fully inspect.
+          Regulus makes that investigation rigorous. It researches evidence, builds a probabilistic
+          model, runs Monte Carlo simulation, detects dominant uncertainties, and autonomously
+          loops back for more research — before finalizing a recommendation you can fully inspect.
         </p>
 
         <div className="flex flex-wrap items-center gap-4">

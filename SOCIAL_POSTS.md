@@ -1,51 +1,50 @@
-# Social media posts for #AllThingsAgenticHackathon
+# Social media posts — #AllThingsAgenticHackathon
 
-## LinkedIn (recommended — most detailed)
+## LinkedIn (use this one — most impact)
 
-Built Regulus for the All Things Agentic Hackathon by Google 🚀
+I grew up in Burundi where the electricity grid ran 10–14 hours a day. Water pumps failed when the grid went down. Local authorities had to allocate scarce infrastructure budgets — $50k here, $30k there — by gut feel, because the tools to do it rigorously didn't exist.
 
-It's an autonomous Gemini agent that solves infrastructure allocation problems under uncertainty — and it doesn't just answer, it *investigates*.
+So I built Regulus for the All Things Agentic Hackathon by Google.
 
-Here's what makes it different from a chatbot:
+It's an autonomous Gemini agent that investigates infrastructure decisions under uncertainty:
 
-→ After the initial simulation, it runs sensitivity analysis to find the dominant uncertainty
-→ If that uncertainty is material (score ≥ 0.35), it autonomously triggers another research loop — targeted at that specific variable
-→ It rebuilds the probabilistic model, re-simulates, and re-evaluates
-→ This loop repeats up to 3 times before finalizing a recommendation
+→ Researches evidence and classifies confidence for every claim
+→ Builds a probabilistic graphical model from that evidence
+→ Runs Monte Carlo simulation across intervention scenarios
+→ Detects which uncertainty dominates the outcome
+→ Autonomously loops back for more targeted research if it's not confident enough
+→ Finalizes a recommendation with explicit assumptions, risks, and conditions
 
-The math (Monte Carlo simulation, Bayesian network, sensitivity analysis) is pure Python — Gemini handles qualitative reasoning but cannot override the computed ranking.
+The math (Bayesian network, Monte Carlo, sensitivity analysis) is pure Python. Gemini explains the reasoning — it cannot override the computed ranking.
 
-Stack: Gemini 2.5 Flash · google-genai SDK · Cloud Run · Firestore · Pub/Sub · Next.js
+Built with: Gemini 2.5 Flash · google-genai SDK · Cloud Run · Firestore · Pub/Sub · Next.js
 
-Try the live demo: [URL]
-Code: [GitHub URL]
+Demo: [URL] | Code: [GitHub URL]
 
-#AllThingsAgenticHackathon #Gemini #GoogleCloud #AI #Agents #Python
+#AllThingsAgenticHackathon #Gemini #GoogleCloud #AI #Burundi #Infrastructure
 
 ---
 
 ## X / Twitter
 
-Built an autonomous Gemini agent for #AllThingsAgenticHackathon that loops until it's confident 🔁
+Grew up in Burundi with 10-hour power cuts. Built an autonomous Gemini agent to solve the infrastructure decisions that affected my community 🇧🇮
 
-After simulating infrastructure scenarios, it detects dominant uncertainty → triggers targeted re-research → rebuilds the model → re-simulates. Up to 3 autonomous loops.
+Regulus researches → models → simulates → detects uncertainty → loops back for more evidence → recommends.
 
-Math is pure Python (Monte Carlo + Bayesian network). Gemini explains, doesn't compute.
+The math is pure Python. Gemini explains, doesn't compute.
+
+#AllThingsAgenticHackathon
 
 Demo: [URL] | Code: [GitHub URL]
 
-#AllThingsAgenticHackathon #Gemini #GoogleCloud
-
 ---
 
-## Instagram / Facebook (shorter)
+## Instagram / Facebook
 
-Just submitted Regulus to the All Things Agentic Hackathon by Google! 🎯
+I'm from Burundi. I grew up watching local authorities make expensive infrastructure decisions by gut feel — because the tools to do it rigorously didn't exist.
 
-An autonomous AI agent that researches, models, simulates, and recommends infrastructure decisions — and loops back for more evidence when it's not confident enough.
+I built Regulus for the All Things Agentic Hackathon by Google to change that. It's an autonomous AI agent that investigates infrastructure allocation problems, detects its own uncertainty, and loops back for more research before committing to a recommendation.
 
-Powered by Gemini 2.5 Flash + Cloud Run + Firestore.
+Powered by Gemini 2.5 Flash + Google Cloud Run.
 
-Link in bio 👆
-
-#AllThingsAgenticHackathon #AI #Gemini #GoogleCloud #Hackathon #MachineLearning
+#AllThingsAgenticHackathon #Gemini #GoogleCloud #AI #Burundi

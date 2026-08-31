@@ -37,7 +37,7 @@ from app.pgm.graph import PGMGraph
 
 
 # Target: fraction of households with reliable access
-OUTCOME_TARGET = 0.60  # 60% of households — ambitious but achievable
+OUTCOME_TARGET = 0.45  # Realistic for peri-urban Burundi context
 TOTAL_HOUSEHOLDS = 4500  # Combined three-community estimate
 
 

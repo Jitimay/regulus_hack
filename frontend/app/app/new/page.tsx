@@ -12,14 +12,14 @@ import type { InterventionType } from "@/lib/types";
 
 const DEMO_VALUES: CreateRunFormValues = {
   decision_question:
-    "How should we allocate $50,000 to improve reliable water access across three communities?",
+    "How should we allocate $50,000 to improve reliable water access across three communities in Bujumbura's peri-urban zone?",
   context:
-    "Maji Valley region (fictional demonstration scenario). Three communities: Kijani, Mtoni, and Amani. Current access is partial and intermittent due to infrastructure limitations.",
+    "Peri-urban communities near Bujumbura, Burundi. Three communities: Kijani, Mtoni, and Amani. The electricity grid runs approximately 10–14 hours per day, making conventional electric pumps unreliable. Pump failures are routine. Rainfall is seasonal with moderate inter-annual variability. Budget is scarce — a wrong allocation is a multi-year setback.",
   budget_usd: 50000,
   communities: [
-    { name: "Kijani", population: 6000 },
-    { name: "Mtoni", population: 4000 },
-    { name: "Amani", population: 3000 },
+    { name: "Kijani", population: 6000, current_access_pct: 0.42, notes: "Largest community, most affected by grid outages" },
+    { name: "Mtoni", population: 4000, current_access_pct: 0.55, notes: "River proximity provides partial water availability" },
+    { name: "Amani", population: 3000, current_access_pct: 0.48, notes: "Highest elevation, storage shortfalls common" },
   ],
   objective:
     "Maximize reliable household water access while controlling downside risk",

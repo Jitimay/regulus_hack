@@ -136,7 +136,7 @@ gcloud run deploy regulus-api \
   --set-env-vars "ENVIRONMENT=production" \
   --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID}" \
   --set-env-vars "GOOGLE_CLOUD_REGION=us-central1" \
-  --set-env-vars "GEMINI_MODEL=gemini-2.0-flash-exp" \
+  --set-env-vars "GEMINI_MODEL=gemini-3.6-flash-exp" \
   --set-env-vars "FIRESTORE_DATABASE=(default)" \
   --set-env-vars "PUBSUB_TOPIC=regulus-runs" \
   --set-env-vars "PUBSUB_SUBSCRIPTION=regulus-runs-sub" \

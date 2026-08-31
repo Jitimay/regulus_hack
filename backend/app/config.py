@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     google_application_credentials: str = Field(default="")
 
     # Gemini
-    gemini_model: str = Field(default="gemini-2.5-flash")
+    gemini_model: str = Field(default="gemini-3.6-flash")
 
     # Firestore
     firestore_database: str = Field(default="(default)")
